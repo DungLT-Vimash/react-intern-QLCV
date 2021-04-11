@@ -6,9 +6,16 @@
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
+    "eslint-config-node": "^4.1.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "react-toggle": "^4.1.2",
+    "uuid": "^8.3.2",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
@@ -34,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-plugin-react": "^7.23.1"
   }
 }
