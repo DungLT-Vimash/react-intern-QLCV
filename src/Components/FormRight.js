@@ -178,7 +178,21 @@ class FormRight extends Component {
       });
       localStorage.setItem('userData',JSON.stringify(this.props.dataUserProps))
     }
-     
+     debounce(func, wait) {
+      var timeout;
+    
+      return function() {
+        var context = this,
+            args = arguments;
+    
+        var executeFunction = function() {
+          func.apply(context, args);
+        };
+    
+        clearTimeout(timeout);
+        timeout = setTimeout(executeFunction, wait);
+      };
+    };
     isChange=(event)=>{
 
       this.setState({
@@ -328,7 +342,7 @@ class FormRight extends Component {
             <div className="div-right">
   <div><button className="button btnadd" onClick={this.props.onchangeform}><i className="far fa-plus" /> Them Cong Viec</button></div>
   <div>
-    <input type="text"   onChange={(event)=>this.isChange(event)}/>
+    <input type="text"   onChange={this.debounce((event)=>this.isChange(event),500)}/>
     <button className="button btnadd"><i className="far fa-search"  onClick={(dl)=>this.props.getTextSearch(this.state.tempValue)}/> tim</button>
     <div className="btnsort">
   <button className="button btnadd " onClick={this.handleToggle}>sap xep <i className="fad fa-caret-square-down " /></button>

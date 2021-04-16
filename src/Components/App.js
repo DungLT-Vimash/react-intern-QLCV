@@ -19,7 +19,7 @@ class App extends Component {
       tempValue:'',
       userEditObject:'',
       addNew:false,
-      update:true
+      update:true,
     };
   }
   
@@ -131,17 +131,42 @@ class App extends Component {
     localStorage.setItem('userData',JSON.stringify(this.state.data))
 
   }
-  render() { 
-
-    var result=[];
+  
+   debounce=(func, wait)=>{
+    var timeout;
+  
+    return ()=> {
+      var context = this,
+          args = this.arguments;
+  
+      var executeFunction = function() {
+        func.apply(context, args);
+      };
+  
+      clearTimeout(timeout);
+      timeout = setTimeout(executeFunction, wait);
+    };
+  };
+  showData=()=>{
+    let result=[];
    
     this.state.data.forEach((item)=>{
       if(item.name.indexOf(this.state.searchText)!== -1){
         result.push(item);
       }
     })
-   console.log(this.state.data[1])
-    
+    return result
+  }
+  render() { 
+
+    // var result=[];
+   
+    // this.state.data.forEach((item)=>{
+    //   if(item.name.indexOf(this.state.searchText)!== -1){
+    //     result.push(item);
+    //   }
+    // })
+ 
   return (
     
     <div className="App">
@@ -168,7 +193,7 @@ class App extends Component {
           }
          editFun={(user)=>this.editUser(user)} 
            getTextSearch={(dl)=>this.getTextSearch(dl)}
-            dataUserProps={result} 
+            dataUserProps={this.showData()} 
              editclickbtn={()=>{this.setState({ showForm:true,nameForm:false,addNew:false})}}
              changeStatus={(id)=>this.changeStatus(id)}
              />

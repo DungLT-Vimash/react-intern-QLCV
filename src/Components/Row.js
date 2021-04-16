@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
- 
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 class Row extends Component {
   constructor(props) {
     super(props);
@@ -31,19 +33,23 @@ class Row extends Component {
   }
   deleteButtonClick=(idUser)=>{
     
-    this.props.deleteButtonClick(idUser);
+    // this.props.deleteButtonClick(idUser);
+    confirmAlert({
+      title: 'Xoa cong viec',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => this.props.deleteButtonClick(idUser)
+        },
+        {
+          label: 'No',
+          
+        }
+      ]
+    });
   }
-  // changeStatus=(id)=>{
-  //   this.props.changeStatus(id); 
-  //   // if(this.state.value==="true"){
-  //   //   this.setState({value:"false"})
-      
-  //   // }
-  //   // if(this.state.value==="false"){
-  //   //   this.setState({value:"true"})
-  //   // }
-   
-  // }
+ 
   
     render() { 
    

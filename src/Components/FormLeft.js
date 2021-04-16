@@ -29,21 +29,28 @@ class FormLeft extends Component {
     const value= this.slug(event.target.value);
     
     
-    this.setState({
-      [name]:value
-    });
-    
-    
+      this.setState({
+        [name]:value
+      });
     
   }
   
  
-  
+  duplicate=(value)=>{
+    let i=0;
+    this.props.data.forEach(element => {
+      if(element.name===value) i++
+    });
+    return i
+  }
   
   
   add=()=>{
-    if(this.props.nameForm===true){
-      this.props.add(this.state.name,this.state.value);
+
+    if(this.props.nameForm===true &&this.state.name!==''){
+      
+      if(this.duplicate(this.state.name)===0) {this.props.add(this.state.name,this.state.value);}
+      
     }else{
       var info={};
       info.id=this.state.id;
