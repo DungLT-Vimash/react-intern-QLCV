@@ -4,10 +4,11 @@ class FormLeft extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value:"2",
+      value:"false",
       name:"",
-      id:""
-     
+      id:"",
+      nameForm:true,
+      
       
     };
   }
@@ -25,25 +26,21 @@ class FormLeft extends Component {
   }
   isChange =(event)=>{
     const name= event.target.name;
-    const value= event.target.value;
-   
+    const value= this.slug(event.target.value);
+    
+    
     this.setState({
       [name]:value
     });
-    var item={};
-    item.name=this.state.name;
-    item.value=this.state.value;
     
-   
+    
+    
   }
   
  
   
   
-   myFunction=()=> {
-    document.getElementById("myForm").reset();
-
-  }
+  
   add=()=>{
     if(this.props.nameForm===true){
       this.props.add(this.state.name,this.state.value);
@@ -56,14 +53,70 @@ class FormLeft extends Component {
     }
     
     document.getElementById("myForm").value="";
+    this.props.close();
   };
-
+  
+  slug=(str)=>{
+    // Chuyển hết sang chữ thường
+        str = str.toLowerCase();     
+    
+        // xóa dấu
+        str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, 'a');
+        str = str.replace(/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/g, 'e');
+        str = str.replace(/(ì|í|ị|ỉ|ĩ)/g, 'i');
+        str = str.replace(/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/g, 'o');
+        str = str.replace(/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/g, 'u');
+        str = str.replace(/(ỳ|ý|ỵ|ỷ|ỹ)/g, 'y');
+        str = str.replace(/(đ)/g, 'd');
+    
+        // Xóa ký tự đặc biệt
+        str = str.replace(/([^0-9a-z-\s])/g, '');
+    
+        // Xóa khoảng trắng thay bằng ký tự -
+        str = str.replace(/(\s+)/g, '-');
+    
+        // xóa phần dự - ở đầu
+        str = str.replace(/^-+/g, '');
+    
+        // xóa phần dư - ở cuối
+        str = str.replace(/-+$/g, '');
+    
+        // return
+        return str;
+}
+  componentDidUpdate=(prevProps, prevState, snapshot)=>{
+    
+      if(this.props.userEditObject.id!==prevProps.userEditObject.id){
+        // name =this.props.userEditObject.name
+     
+          this.setState({
+            name:this.props.userEditObject.name,
+            value:this.props.userEditObject.value,
+            id : this.props.userEditObject.id
+          })
+    }
+    
+      
+  }
   titleForm=()=>{
     if(this.props.nameForm===true){
+      
+      
       return "them"
     }else return "sua"
   }
+  name=()=>{
+    if(this.props.nameForm===true){
+      
+      
+      return ""
+    }else return this.state.name
+  }
+  
+
     render() { 
+   
+    //  const name =this.props.userEditObject.name
 
         return (
             <div className="menu-left">
@@ -74,14 +127,14 @@ class FormLeft extends Component {
   <div className="panel-body">
     <div>
       <div><label>Ten :</label></div>
-      <input name="name" id="myForm" type="text" className="name" onChange={(event)=>this.isChange(event)} defaultValue={this.state.name}  />
+      <input name="name" id="myForm" type="text" className="name" onChange={(event)=>this.isChange(event)} defaultValue={this.name()}  />
     </div>     
     <div>
       <div><label>Trạng Thái</label></div>
-      <select value={this.state.value}   name="value" className="trangthai" onChange={(event)=>this.isChange(event)} >
-        <option  value="1">Kích hoạt</option>
-        <option  value="2">Ẩn</option>
-
+      <select defaultValue={this.state.value}   name="value" className="trangthai" onChange={(event)=>this.isChange(event)} >
+      <option  value={true}>Kích hoạt</option>
+        <option  value={false}>Ẩn</option>
+        
       </select>
     </div>
     <div className="divbutton">

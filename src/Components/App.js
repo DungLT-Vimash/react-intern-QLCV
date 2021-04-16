@@ -15,8 +15,11 @@ class App extends Component {
       editUserStatus:false,
       data:[],
       nameForm:true,
-      userObj:{},tempValue:''
-      
+      userObj:{},
+      tempValue:'',
+      userEditObject:'',
+      addNew:false,
+      update:true
     };
   }
   
@@ -33,7 +36,7 @@ class App extends Component {
     }
   }
   getUserEditInfo=(info)=>{
-    console.log("info ",info)
+ 
     this.setState({
       userObj : info
     });
@@ -60,16 +63,13 @@ class App extends Component {
       userEditObject: user
     })
   }
-  getNameForm=(name)=>{
-    name="Ten"
-  }
+  
   getNewUserData=(name,value)=>{
-    var item = {};
+    const item = {};
     item.id=uuidv4();
     item.name=name;
     item.value=value;
-   
-
+    
     var items =this.state.data;
     
     items.push(item);
@@ -100,9 +100,39 @@ class App extends Component {
    
    localStorage.removeItem('userData',JSON.stringify(idUser));
    }
-  
+   update=(info)=>{
+     if(this.state.update){
+       this.getUserEditInfo(info)
+     }
+   }
+  nameEdit=()=>{
+    const name=this.props.userEditObject.name ;
+    if(this.props.nameForm===true){
+      return ''
+    }else return name   
+  }
+  changeStatus=(id)=>{
+    
+    this.state.data.forEach(element => {
+      if(element.id===id){
+        if(element.value==="true") return element.value="false";
+        if(element.value==="false") return element.value="true";
+      }
+    
+      
+    })
+    this.setState(
+      {
+        data:this.state.data
+      }
+    )
+    
+    
+    localStorage.setItem('userData',JSON.stringify(this.state.data))
+
+  }
   render() { 
-    // localStorage.setItem('userData',JSON.stringify(DataUser));
+
     var result=[];
    
     this.state.data.forEach((item)=>{
@@ -110,7 +140,7 @@ class App extends Component {
         result.push(item);
       }
     })
-   
+   console.log(this.state.data[1])
     
   return (
     
@@ -120,23 +150,28 @@ class App extends Component {
         {
          this.state.showForm&& <FormLeft nameForm={this.state.nameForm}
           add={(name,value)=>this.getNewUserData(name,value)}
-          onchangeform={()=>this.setState({ showForm:true})}
+          onchangeform={()=>this.setState({ showForm:true,addNew:true})}
           close={()=>this.setState({ showForm:false})}
           getUserEditInfoApp ={(info) => this.getUserEditInfoApp(info)}
           userEditObject={this.state.userEditObject}
           getTextSearch={(dl)=>this.getTextSearch(dl)}
           editUserStatus={this.state.editUserStatus}
-          
+          addNew={this.state.addNew}
           getUserEditInfo={(info)=>this.getUserEditInfo(info) }
+          data={this.state.data}
           />
           
         }
-        <FormRight onchangeform={()=>{this.setState({ showForm:true,nameForm:true})} }
+        <FormRight onchangeform={()=>{this.setState({ showForm:true,nameForm:true,addNew:true})} }
          deleteUser={(idUser)=>this.deleteUser(idUser)} 
+          update={()=>this.setState({update:!this.state.update})
+          }
          editFun={(user)=>this.editUser(user)} 
            getTextSearch={(dl)=>this.getTextSearch(dl)}
             dataUserProps={result} 
-             editclickbtn={()=>{this.setState({ showForm:true,nameForm:false})}} />
+             editclickbtn={()=>{this.setState({ showForm:true,nameForm:false,addNew:false})}}
+             changeStatus={(id)=>this.changeStatus(id)}
+             />
       </div>
     </div>
 
